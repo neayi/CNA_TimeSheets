@@ -1,0 +1,13 @@
+{
+  "timeZone": "Europe/Paris",
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "AirtableCNA",
+      "libraryId": "1BmdSBcw9oXIusjUzuwH_IslRi5sqPmU_Kd2CK1RJaEuibpc8unUqxnvX",
+      "version": "0",
+      "developmentMode": true
+    }]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

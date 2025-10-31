@@ -129,8 +129,7 @@ function createTimeSheets()
 
         const declaredTime = person.times.get(dateKey);
 
-        let daysInMonth = new Date(year, m, -1); // m is 0 based, we want the last day of month m-1
-        let numberOfDays = Math.round(declaredTime.declaredTime * daysInMonth.getDate() * 5 / 7);
+        let numberOfDays = Math.round(declaredTime.declaredTime * 18.25);
 
         values.push([numberOfDays, Array.from(declaredTime.workPackages).join("\n")]);
         signatures.push(['=Image("' + person.signature + '")', dateSignature]);

@@ -84,7 +84,7 @@ function createTimeSheets()
     if (lastYear === null || lastYear < declaredDate.getFullYear())
       lastYear = declaredDate.getFullYear();
 
-    let declaredTime = this.getValue(row, "Temps (PM)", headers);
+    let declaredTime = this.getValue(row, "Temps (jours)", headers);
     let workPackageShortname = this.getValue(row, "Work package", headers);
     workPackageShortname = workPackageShortname.replace(' - ' + params['Project acronym'], "");
 
@@ -129,7 +129,7 @@ function createTimeSheets()
 
         const declaredTime = person.times.get(dateKey);
 
-        let numberOfDays = Math.round(declaredTime.declaredTime * 18.25);
+        let numberOfDays = Math.round(declaredTime.declaredTime * 10) / 10; // un chiffre après la virgule
 
         values.push([numberOfDays, Array.from(declaredTime.workPackages).join("\n")]);
         signatures.push(['=Image("' + person.signature + '")', dateSignature]);
@@ -145,6 +145,7 @@ function createTimeSheets()
         return;
       }
 
+      
       let sheet = this.createTimeSheet(person.name, year);
 
       sheet.getRange(11, 2, 12, 2).setValues(values);

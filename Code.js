@@ -120,20 +120,16 @@ function createTimeSheets()
 
         if (!person.times.has(dateKey)) {
           values.push([0, ""]);
-          signatures.push(['=Image("' + person.signature + '")', dateSignature]);
-          supervisorSignatures.push(["Name: " + supervisor + "\nSignature:", '=Image("' + '' + '")', dateSignature]);
-          continue;
+        }
+        else {
+          hasTimeInYear = true;
+          const declaredTime = person.times.get(dateKey);
+          let numberOfDays = Math.round(declaredTime.declaredTime * 10) / 10; // un chiffre après la virgule
+          values.push([numberOfDays, Array.from(declaredTime.workPackages).join("\n")]);
         }
 
-        hasTimeInYear = true;
-
-        const declaredTime = person.times.get(dateKey);
-
-        let numberOfDays = Math.round(declaredTime.declaredTime * 10) / 10; // un chiffre après la virgule
-
-        values.push([numberOfDays, Array.from(declaredTime.workPackages).join("\n")]);
-        signatures.push(['=Image("' + person.signature + '")', dateSignature]);
-        supervisorSignatures.push(["Name: " + supervisor + "\nSignature:", '=Image("' + '' + '")', dateSignature]);
+        signatures.push(["Date: " + dateSignature + "\n\nSignature:", '=vlookup($C$7; Accueil!$A$17:$C$36; 3; false)']);
+        supervisorSignatures.push(["Date: " + dateSignature + "\nName: " + supervisor + "\n\nSignature:", '=Image("' + '' + '")']);
       }
 
       if (!hasTimeInYear) {
@@ -144,7 +140,6 @@ function createTimeSheets()
           ss.deleteSheet(existingSheet);
         return;
       }
-
       
       let sheet = this.createTimeSheet(person.name, year);
 

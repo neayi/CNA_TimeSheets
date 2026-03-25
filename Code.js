@@ -129,7 +129,7 @@ function createTimeSheets()
         }
 
         signatures.push(["Date: " + dateSignature + "\n\nSignature:", '=vlookup($C$7; Accueil!$A$17:$C$36; 3; false)']);
-        supervisorSignatures.push(["Date: " + dateSignature + "\nName: " + supervisor + "\n\nSignature:", '=Image("' + '' + '")']);
+        supervisorSignatures.push(["Date: " + dateSignature + "\n" + supervisor + "\n\nSignature:", '=vlookup("' + supervisor + '"; Accueil!$A$17:$C$36; 3; false)']);
       }
 
       if (!hasTimeInYear) {
@@ -144,8 +144,8 @@ function createTimeSheets()
       let sheet = this.createTimeSheet(person.name, year);
 
       sheet.getRange(11, 2, 12, 2).setValues(values);
-      sheet.getRange(11, 5, 12, 2).setValues(signatures);
-      sheet.getRange(11, 7, 12, 3).setValues(supervisorSignatures);
+      sheet.getRange(11, 4, 12, 2).setValues(signatures);
+      sheet.getRange(11, 7, 12, 2).setValues(supervisorSignatures);
 
       sheet.getRange(1, 2, 1, 3).setValues([[params['Project number'], params['Project acronym'], params['Call identifier']]]);
 

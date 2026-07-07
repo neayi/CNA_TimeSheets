@@ -26,8 +26,30 @@ function getDateValue(row, columnName, headers) {
   return dateValue;
 }
 
+function deleteAllPreviouslyGeneratedSheets() {
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheets = ss.getSheets();
+
+  let sheetnamesToDelete = [];
+
+  sheets.forEach(sheet => {
+    if (sheet.getName().match(/\d{4}$/)) { // les feuilles de temps ont pour nom "Personne Année"
+      sheetnamesToDelete.push(sheet.getName());
+    }
+  });
+
+  sheetnamesToDelete.forEach(sheetName => {
+    let sheet = ss.getSheetByName(sheetName);
+    if (sheet) {
+      ss.deleteSheet(sheet);
+    }
+  });
+}
+
 function createTimeSheets()
 {
+  this.deleteAllPreviouslyGeneratedSheets();
+
   // Find the project in AirTable
   let params = this.getParams();
 

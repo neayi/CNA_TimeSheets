@@ -53,12 +53,11 @@ function createTimeSheets()
   // Find the project in AirTable
   let params = this.getParams();
 
-  let year = String(params['Année']);
+  let yearToCompute = String(params['Année']);
   let supervisor = String(params['Nom du superviseur']);
-
   let dateSignature = params['Date à indiquer dans la feuille de temps'];
 
-  if (year.length == 0 || dateSignature == '') {
+  if (dateSignature == '') {
     SpreadsheetApp.getUi().alert("Veuillez vérifier les paramètres dans l'onglet Accueil !");
     return;
   }
@@ -127,9 +126,16 @@ function createTimeSheets()
     persons.set(personName, person);    
   });
 
+  if (yearToCompute.length == 4) {
+    firstYear = parseInt(yearToCompute);
+    lastYear = parseInt(yearToCompute);
+  }
+
   for (let year = firstYear; year <= lastYear; year++) {
 
     persons.forEach((person, personName) => {
+
+      Logger.log("Generating timesheet for " + personName + " in year " + year);
 
       let values = [];
       let signatures = [];
@@ -163,6 +169,8 @@ function createTimeSheets()
         return;
       }
       
+      Logger.log("Creating timesheet for " + personName + " in year " + year);
+
       let sheet = this.createTimeSheet(person.name, year);
 
       sheet.getRange(11, 2, 12, 2).setValues(values);
@@ -184,6 +192,8 @@ function createTimeSheets()
       // flush
       SpreadsheetApp.flush();
       
+      Logger.log("Exporting timesheet for " + personName + " in year " + year);
+
       // Export to PDF
       exportToPDF(sheet, exportFolder);
     });
